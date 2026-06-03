@@ -715,6 +715,9 @@ footer {
 
 .reveal.visible { opacity: 1; transform: translateY(0); }
 
+/* ── HAMBURGER (hidden on desktop) ── */
+.nav-hamburger { display: none; }
+
 /* ── RESPONSIVE ── */
 @media (max-width: 900px) {
   nav { padding: 0 1.5rem; }
@@ -730,6 +733,64 @@ footer {
   .contact-section .section-wrap { grid-template-columns: 1fr; gap: 3rem; }
   footer { flex-direction: column; gap: 0.5rem; padding: 1.5rem; text-align: center; }
 }
+
+/* ── MOBILE ONLY (<600px) ── */
+@media (max-width: 600px) {
+  /* Hamburger button */
+  .nav-hamburger {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    cursor: pointer;
+    padding: 8px;
+    background: none;
+    border: none;
+  }
+  .nav-hamburger span {
+    display: block;
+    width: 22px;
+    height: 2px;
+    background: var(--navy);
+    transition: all 0.3s;
+  }
+
+  /* Hide nav links by default on mobile */
+  .nav-links {
+    display: none;
+    flex-direction: column;
+    position: absolute;
+    top: 64px;
+    left: 0; right: 0;
+    background: rgba(255,255,255,0.98);
+    border-bottom: 1px solid var(--border);
+    padding: 1.5rem;
+    gap: 1.25rem;
+    z-index: 300;
+  }
+  .nav-links.open { display: flex; }
+
+  /* Hero */
+  .hero-left { padding: 3rem 1.25rem 2.5rem; }
+  .hero-contact-row { flex-wrap: wrap; gap: 0.75rem; }
+  .hero-btn { flex: 1; text-align: center; min-width: 130px; }
+
+  /* Sections */
+  .section-wrap { padding: 3rem 1.25rem; }
+
+  /* Education images */
+  .edu-entry img { height: 200px !important; }
+
+  /* Contact email — prevent overflow */
+  .contact-link {
+    flex-wrap: wrap;
+    gap: 0.25rem;
+    word-break: break-all;
+    font-size: 0.78rem;
+  }
+
+  /* Footer */
+  footer { padding: 1.25rem; font-size: 0.62rem; }
+}
 </style>
 </head>
 <body>
@@ -737,12 +798,15 @@ footer {
 <!-- NAV -->
 <nav>
   <a href="#" class="nav-logo"><span style="font-family:'Times New Roman', serif; font-size:1.2rem; color:#1c2b4a; font-weight:400; letter-spacing:0.02em;">Krish's Profile</span></a>
-  <ul class="nav-links">
+  <ul class="nav-links" id="navLinks">
     <li><a href="#work">Experience</a></li>
     <li><a href="#beyond">Beyond 9–5</a></li>
     <li><a href="#education">Education</a></li>
     <li><a href="#contact">Contact</a></li>
   </ul>
+  <button class="nav-hamburger" id="menuBtn" aria-label="Menu">
+    <span></span><span></span><span></span>
+  </button>
 </nav>
 
 <!-- HERO -->
@@ -1019,9 +1083,9 @@ footer {
         LinkedIn Profile
         <span class="contact-link-label">Open →</span>
       </a>
-      <a href="Krish%20Bholanathwala%202026%20CV.pdf" download target="_blank" class="contact-link">
+      <a href="Krish%20Bholanathwala%202026%20CV.pdf" download class="contact-link">
         Download CV
-       <a href="Krish%20Bholanathwala%202026%20CV.pdf" download class="contact-link">
+        <span class="contact-link-label">Download →</span>
       </a>
     </div>
   </div>
@@ -1045,6 +1109,16 @@ footer {
     });
   }, { threshold: 0.08 });
   reveals.forEach(el => observer.observe(el));
+
+  // Hamburger menu
+  const menuBtn = document.getElementById('menuBtn');
+  const navLinks = document.getElementById('navLinks');
+  menuBtn.addEventListener('click', () => {
+    navLinks.classList.toggle('open');
+  });
+  navLinks.querySelectorAll('a').forEach(link => {
+    link.addEventListener('click', () => navLinks.classList.remove('open'));
+  });
 </script>
 </body>
 </html>
