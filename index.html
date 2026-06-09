@@ -706,6 +706,14 @@ footer {
   100% { width: 120px; height: 120px; opacity: 0; }
 }
 
+@keyframes glitch1 {
+  0%   { clip-path: inset(20% 0 60% 0); transform: translate(-4px, 0); }
+  25%  { clip-path: inset(50% 0 20% 0); transform: translate(4px, 0); }
+  50%  { clip-path: inset(10% 0 70% 0); transform: translate(-2px, 0); }
+  75%  { clip-path: inset(70% 0 10% 0); transform: translate(2px, 0); }
+  100% { clip-path: inset(0% 0 0% 0);   transform: translate(0, 0); }
+}
+
 @keyframes ticker {
   from { transform: translateX(0); }
   to { transform: translateX(-50%); }
@@ -833,7 +841,7 @@ footer {
 
   <div class="hero-right">
     <!-- Replace the div below with <img src="your-photo.jpg" class="card-img" style="width:100%;height:100%;object-fit:cover;object-position:top"> -->
-  <img src="krishgpt1.png" style="width:100%;height:100%;min-height:100vh;max-height:100vh;object-fit:contain;object-position:center;background:#fFfFfF;">
+<img src="krishgpt1.png" id="hero-photo" style="width:100%;height:100%;min-height:100vh;max-height:100vh;object-fit:contain;object-position:center;background:#ffffff;">
 </section>
 
 <!-- ABOUT STRIP -->
@@ -1193,6 +1201,56 @@ document.querySelectorAll('.hero-btn').forEach(btn => {
     btn.style.transition = 'transform 0.5s ease';
   });
 });
+
+// Glitch effect on hero photo
+const heroPhoto = document.getElementById('hero-photo');
+if (heroPhoto) {
+  const glitchWrap = document.createElement('div');
+  glitchWrap.style.cssText = 'position:relative; width:100%; height:100%;';
+  heroPhoto.parentNode.insertBefore(glitchWrap, heroPhoto);
+  glitchWrap.appendChild(heroPhoto);
+
+  const clone1 = heroPhoto.cloneNode();
+  const clone2 = heroPhoto.cloneNode();
+
+  [clone1, clone2].forEach((cl, i) => {
+    cl.style.cssText = `
+      position:absolute; top:0; left:0;
+      width:100%; height:100%;
+      min-height:100vh; max-height:100vh;
+      object-fit:contain; object-position:center;
+      background:transparent;
+      opacity:0; pointer-events:none;
+    `;
+    glitchWrap.appendChild(cl);
+  });
+
+  function triggerGlitch() {
+    clone1.style.opacity = '0.7';
+    clone1.style.filter = 'hue-rotate(90deg) saturate(3)';
+    clone1.style.animation = 'glitch1 0.3s steps(2) forwards';
+    clone1.style.mixBlendMode = 'screen';
+
+    clone2.style.opacity = '0.5';
+    clone2.style.filter = 'hue-rotate(200deg) saturate(3)';
+    clone2.style.animation = 'glitch1 0.3s steps(2) reverse forwards';
+    clone2.style.mixBlendMode = 'screen';
+
+    setTimeout(() => {
+      clone1.style.opacity = '0';
+      clone2.style.opacity = '0';
+      clone1.style.animation = '';
+      clone2.style.animation = '';
+    }, 300);
+  }
+
+  // Trigger on load then randomly
+  setTimeout(triggerGlitch, 800);
+  setTimeout(triggerGlitch, 1500);
+  setInterval(() => {
+    if (Math.random() > 0.5) triggerGlitch();
+  }, 4000);
+}
 
 const reveals = document.querySelectorAll('.reveal');
   const observer = new IntersectionObserver(entries => {
