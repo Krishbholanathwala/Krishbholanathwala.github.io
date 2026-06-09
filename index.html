@@ -701,6 +701,11 @@ footer {
   to { opacity: 1; transform: translateY(0); }
 }
 
+@keyframes rippleOut {
+  0% { width: 0; height: 0; opacity: 1; }
+  100% { width: 120px; height: 120px; opacity: 0; }
+}
+
 @keyframes ticker {
   from { transform: translateX(0); }
   to { transform: translateX(-50%); }
@@ -1154,7 +1159,27 @@ document.querySelectorAll('.card, .edu-entry').forEach(card => {
     card.style.boxShadow = '';
   });
 });
-  const reveals = document.querySelectorAll('.reveal');
+  // Ripple on click
+document.addEventListener('click', e => {
+  const ripple = document.createElement('div');
+  ripple.style.cssText = `
+    position: fixed;
+    left: ${e.clientX}px;
+    top: ${e.clientY}px;
+    width: 0;
+    height: 0;
+    border-radius: 50%;
+    border: 2px solid var(--navy);
+    transform: translate(-50%, -50%);
+    pointer-events: none;
+    z-index: 9999;
+    animation: rippleOut 0.8s ease-out forwards;
+  `;
+  document.body.appendChild(ripple);
+  setTimeout(() => ripple.remove(), 800);
+});
+
+const reveals = document.querySelectorAll('.reveal');
   const observer = new IntersectionObserver(entries => {
     entries.forEach((e, i) => {
       if (e.isIntersecting) {
