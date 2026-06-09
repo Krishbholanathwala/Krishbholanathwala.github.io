@@ -1135,7 +1135,7 @@ footer {
 
 <script>
   // 3D Card Tilt
-document.querySelectorAll('.card').forEach(card => {
+document.querySelectorAll('.card, .edu-entry').forEach(card => {
   card.addEventListener('mousemove', e => {
     const rect = card.getBoundingClientRect();
     const x = e.clientX - rect.left;
