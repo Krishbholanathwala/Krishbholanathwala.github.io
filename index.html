@@ -1252,53 +1252,6 @@ if (heroPhoto) {
   }, 4000);
 }
 
-// Timeline line draw
-const jobSection = document.querySelector('#work .section-wrap');
-if (jobSection) {
-  const line = document.createElement('div');
-  line.style.cssText = `
-    position: absolute;
-    left: 89px;
-    top: 0;
-    width: 2px;
-    background: var(--navy);
-    height: 0;
-    transition: height 1.5s ease;
-    z-index: 1;
-  `;
-  jobSection.style.position = 'relative';
-  jobSection.appendChild(line);
-
-  const dot = document.createElement('div');
-  dot.style.cssText = `
-    position: absolute;
-    left: 83px;
-    width: 14px;
-    height: 14px;
-    border-radius: 50%;
-    background: var(--navy);
-    top: 0;
-    z-index: 2;
-    opacity: 0;
-    transition: opacity 0.3s ease;
-  `;
-  jobSection.appendChild(dot);
-
-  const observer = new IntersectionObserver(entries => {
-    entries.forEach(entry => {
-      if (entry.isIntersecting) {
-        dot.style.opacity = '1';
-        const jobs = jobSection.querySelectorAll('.job');
-        const lastJob = jobs[jobs.length - 1];
-        const totalHeight = lastJob.offsetTop + lastJob.offsetHeight;
-        line.style.height = totalHeight + 'px';
-      }
-    });
-  }, { threshold: 0.1 });
-
-  observer.observe(jobSection);
-}
-
 const reveals = document.querySelectorAll('.reveal');
   const observer = new IntersectionObserver(entries => {
     entries.forEach((e, i) => {
