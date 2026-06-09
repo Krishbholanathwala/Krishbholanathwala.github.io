@@ -1179,6 +1179,21 @@ document.addEventListener('click', e => {
   setTimeout(() => ripple.remove(), 800);
 });
 
+// Magnetic Buttons
+document.querySelectorAll('.hero-btn').forEach(btn => {
+  btn.addEventListener('mousemove', e => {
+    const rect = btn.getBoundingClientRect();
+    const x = e.clientX - rect.left - rect.width / 2;
+    const y = e.clientY - rect.top - rect.height / 2;
+    btn.style.transform = `translate(${x * 0.3}px, ${y * 0.3}px)`;
+    btn.style.transition = 'transform 0.1s ease';
+  });
+  btn.addEventListener('mouseleave', () => {
+    btn.style.transform = 'translate(0, 0)';
+    btn.style.transition = 'transform 0.5s ease';
+  });
+});
+
 const reveals = document.querySelectorAll('.reveal');
   const observer = new IntersectionObserver(entries => {
     entries.forEach((e, i) => {
